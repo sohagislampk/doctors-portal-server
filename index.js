@@ -16,6 +16,16 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
+        const appointmentOptionsCollections = client.db('doctorsportaldb').collection('appointmentoptions')
+        const bookingCollections = client.db('doctorsportaldb').collection('bookings')
+        app.get('/appointmentoptions', async (req, res) => {
+            const query = {};
+            const result = await appointmentOptionsCollections.find(query).toArray();
+            res.send(result);
+        })
+
+
+
 
     }
     finally {
