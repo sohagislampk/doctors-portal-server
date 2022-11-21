@@ -62,11 +62,26 @@ async function run() {
             const result = await bookingCollections.insertOne(booking);
             res.send(result);
         });
+
+        app.get('/jwt', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            if (user) {
+                const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '12h' })
+                return res.send({ accessToken: token });
+            }
+            res.status(403).send({ accessToken: '' })
+        });
+
+
         app.get('/users', async (req, res) => {
             const query = {};
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         });
+
+
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log(user);
