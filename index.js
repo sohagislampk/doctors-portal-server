@@ -18,6 +18,7 @@ async function run() {
     try {
         const appointmentOptionsCollections = client.db('doctorsportaldb').collection('appointmentoptions')
         const bookingCollections = client.db('doctorsportaldb').collection('bookings')
+        const usersCollection = client.db('doctorsportaldb').collection('users')
         app.get('/appointmentoptions', async (req, res) => {
             const date = req.query.date;
             const query = {};
@@ -60,6 +61,11 @@ async function run() {
 
             const result = await bookingCollections.insertOne(booking);
             res.send(result);
+        });
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
         });
         app.post('/users', async (req, res) => {
             const user = req.body;
