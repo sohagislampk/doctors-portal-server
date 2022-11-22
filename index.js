@@ -41,6 +41,21 @@ async function run() {
         const bookingCollections = client.db('doctorsportaldb').collection('bookings')
         const usersCollection = client.db('doctorsportaldb').collection('users')
         const doctorsCollection = client.db('doctorsportaldb').collection('doctors')
+
+        //verify admin will be after verify jwt
+        const verifyAdmin = async (req, res, next) => {
+            const decodedEmail = req.decoded.email;
+            const query = { email: decodedEmail };
+            const user = await usersCollection.findOne(query);
+
+            if (user?.role !== 'admin') {
+                return res.status(403).send({ message: 'forbidden access' })
+            }
+            next();
+        }
+
+
+
         app.get('/appointmentoptions', async (req, res) => {
             const date = req.query.date;
             const query = {};
