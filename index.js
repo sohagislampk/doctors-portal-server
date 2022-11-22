@@ -40,6 +40,7 @@ async function run() {
         const appointmentOptionsCollections = client.db('doctorsportaldb').collection('appointmentoptions')
         const bookingCollections = client.db('doctorsportaldb').collection('bookings')
         const usersCollection = client.db('doctorsportaldb').collection('users')
+        const doctorsCollection = client.db('doctorsportaldb').collection('doctors')
         app.get('/appointmentoptions', async (req, res) => {
             const date = req.query.date;
             const query = {};
@@ -138,6 +139,24 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         })
+        app.get('/appointmentSpecialty', async (req, res) => {
+            const query = {}
+            const result = await appointmentOptionsCollections.find(query).project({ name: 1 }).toArray();
+            res.send(result);
+        });
+
+
+        app.get('/doctors', verifyJWT, verifyAdmin, async (req, res) => {
+            const query = {};
+            const doctors = await doctorsCollection.find(query).toArray();
+            res.send(doctors);
+        });
+
+        app.post('/doctors', verifyJWT, verifyAdmin, async (req, res) => {
+            const doctor = req.body;
+            const result = await doctorsCollection.insertOne(doctor);
+            res.send(result);
+        });
 
 
     }
