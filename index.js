@@ -26,7 +26,13 @@ function sendBookingEmail(booking) {
             pass: process.env.SENDGRID_API_KEY
         }
     })
-}
+};
+
+transporter.sendMail({
+    from: email,
+    to: email,
+    subject:
+})
 
 
 function verifyJWT(req, res, next) {
