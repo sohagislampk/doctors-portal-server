@@ -139,7 +139,7 @@ async function run() {
             }
             const updatedResult = await bookingCollections.updateOne(filter, updatedDoc)
             res.send(result);
-        })
+        });
 
 
 
@@ -184,7 +184,7 @@ async function run() {
             }
             const result = await usersCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
-        })
+        });
         app.get('/appointmentSpecialty', async (req, res) => {
             const query = {}
             const result = await appointmentOptionsCollections.find(query).project({ name: 1 }).toArray();
