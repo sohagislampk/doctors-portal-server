@@ -15,6 +15,20 @@ app.use(express.json())
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.9qpmxm2.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+
+function sendBookingEmail(booking) {
+    const { email, treatment, appointmentDate, slot } = booking;
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.sendgrid.net',
+        port: 587,
+        auth: {
+            user: "apikey",
+            pass: process.env.SENDGRID_API_KEY
+        }
+    })
+}
+
+
 function verifyJWT(req, res, next) {
 
     const authHeader = req.headers.authorization;
